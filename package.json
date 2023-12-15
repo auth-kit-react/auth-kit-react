@@ -21,7 +21,7 @@
     "auth-next"
   ],
   "scripts": {
-    "build": "yarn tsc",
+    "build": "yarn lint && yarn format && yarn tsc",
     "start": "react-scripts start",
     "eject": "react-scripts eject",
     "format": "prettier --log-level error --write \"lib/**/*.{ts,tsx,js,json}\"",
