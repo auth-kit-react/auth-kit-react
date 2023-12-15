@@ -1,7 +1,7 @@
 interface CookieOptions {
-  path?: string;
-  expires?: Date | string | number;
-  [key: string]: string | Date | number | undefined;
+  path?: string
+  expires?: Date | string | number
+  [key: string]: string | Date | number | undefined
 }
 /**
  * Options for setting a cookie.
@@ -21,36 +21,34 @@ interface CookieOptions {
 export function setCookie(
   name: string,
   value: string,
-  options: CookieOptions = {}
+  options: CookieOptions = {},
 ): void {
   options = {
-    path: "/",
+    path: '/',
     ...options,
-  };
-
-  if (options.expires instanceof Date) {
-    options.expires = options.expires.toUTCString();
-  } else if (typeof options.expires === "number") {
-    // Convert number to UTC string assuming it's a timestamp
-    options.expires = new Date(options.expires).toUTCString();
   }
 
-  let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(
-    value
-  )}`;
+  if (options.expires instanceof Date) {
+    options.expires = options.expires.toUTCString()
+  } else if (typeof options.expires === 'number') {
+    // Convert number to UTC string assuming it's a timestamp
+    options.expires = new Date(options.expires).toUTCString()
+  }
+
+  let updatedCookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`
 
   for (const optionKey in options) {
-    if (optionKey !== "expires") {
-      updatedCookie += `; ${optionKey}`;
-      const optionValue = options[optionKey];
+    if (optionKey !== 'expires') {
+      updatedCookie += `; ${optionKey}`
+      const optionValue = options[optionKey]
 
-      if (typeof optionValue === "string" || typeof optionValue === "number") {
-        updatedCookie += `=${optionValue}`;
+      if (typeof optionValue === 'string' || typeof optionValue === 'number') {
+        updatedCookie += `=${optionValue}`
       }
     }
   }
 
-  document.cookie = updatedCookie;
+  document.cookie = updatedCookie
 }
 
 /**
@@ -61,10 +59,14 @@ export function setCookie(
 export function getCookie(name: string): string | null {
   const matches = document.cookie.match(
     new RegExp(
-      "(?:^|; )" + name.replace(/([.$?*|{}()[]\\\/+^])/g, "\\$1") + "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : null;
+      '(?:^|; )' + name.replace(/([.$?*|{}()[]\\\/+^])/g, '\\$1') + '=([^;]*)',
+    ),
+  )
+  if (matches?.[1] !== undefined && matches[1] !== null && matches[1] !== '') {
+    return decodeURIComponent(matches[1])
+  } else {
+    return null
+  }
 }
 
 /**
@@ -73,6 +75,6 @@ export function getCookie(name: string): string | null {
  */
 export function eraseCookie(name: string): void {
   document.cookie = `${encodeURIComponent(
-    name
-  )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    name,
+  )}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
 }

@@ -7,10 +7,10 @@
  * @property {number} [cookieExpires] - The expiration time for the authentication cookie (optional).
  */
 export interface AuthUtilsOptions {
-  baseUrl: string;
-  loginEndpoint: string;
-  logoutUrl: string;
-  cookieExpires?: number;
+  baseUrl: string
+  loginEndpoint: string
+  logoutUrl: string
+  cookieExpires?: number
 }
 
 /**
@@ -23,12 +23,12 @@ export interface AuthUtilsOptions {
  *   A function to retrieve authenticated API data with loading and error indicators.
  */
 export interface AuthContextProps {
-  token: string | null;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
+  token: string | null
+  login: (username: string, password: string) => Promise<void>
+  logout: () => void
   useAuthenticatedApi: <T>(
-    endpoint: string
-  ) => [T | null, boolean, string | null];
+    endpoint: string,
+  ) => [T | null, boolean, string | null]
 }
 
 /**
@@ -38,6 +38,6 @@ export interface AuthContextProps {
  * @property {AuthUtilsOptions} authUtilsOptions - The configuration options for authentication utilities.
  */
 export interface AuthProviderProps {
-  children: React.ReactNode;
-  authUtilsOptions: AuthUtilsOptions;
+  children: React.ReactNode
+  authUtilsOptions: AuthUtilsOptions
 }

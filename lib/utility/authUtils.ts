@@ -1,10 +1,10 @@
-import ky from "ky";
-import { setCookie, eraseCookie } from "./cookieUtils";
-import { AuthUtilsOptions } from "../../types/types";
-import { useAuth } from "../AuthProvider";
+import ky from 'ky'
+import { setCookie, eraseCookie } from './cookieUtils'
+import { type AuthUtilsOptions } from '../../types/types'
+import { useAuth } from '../AuthProvider'
 
 interface LoginResponse {
-  token: string;
+  token: string
   // Add other response properties as needed
 }
 
@@ -19,23 +19,23 @@ interface LoginResponse {
 export async function login(
   username: string,
   password: string,
-  options: AuthUtilsOptions
+  options: AuthUtilsOptions,
 ): Promise<void> {
   try {
-    const loginUrl = `${options.baseUrl}${options.loginEndpoint}`;
+    const loginUrl = `${options.baseUrl}${options.loginEndpoint}`
     const response: LoginResponse = await ky
       .post(loginUrl, {
         json: { username, password },
       })
-      .json();
+      .json()
 
-    const { token } = response;
+    const { token } = response
 
     // Store the token in a cookie
-    setCookie("authToken", token, { expires: options.cookieExpires ?? 3600 }); // Adjust as needed
+    setCookie('authToken', token, { expires: options.cookieExpires ?? 3600 }) // Adjust as needed
   } catch (error) {
     // Handle authentication error
-    throw new Error("Authentication failed");
+    throw new Error('Authentication failed')
   }
 }
 
@@ -45,19 +45,20 @@ export async function login(
  * @throws {Error} - Throws an error if logout fails.
  */
 export function logout(options: AuthUtilsOptions): void {
-  try {
-    const logoutUrl = `${options.baseUrl}${options.logoutUrl}`;
-    // You might want to include additional headers or handle the response accordingly
-    ky.post(logoutUrl, {
-      // Include any other data required for your logout API
-    });
+  const logoutUrl = `${options.baseUrl}${options.logoutUrl}`
 
-    // Clear the authentication token from the cookie
-    eraseCookie("authToken");
-  } catch (error) {
-    // Handle logout error
-    throw new Error("Logout failed");
-  }
+  // You might want to include additional headers or handle the response accordingly
+  ky.post(logoutUrl, {
+    // Include any other data required for your logout API
+  })
+    .then(() => {
+      // Clear the authentication token from the cookie
+      eraseCookie('authToken')
+    })
+    .catch((_error) => {
+      // Handle logout error
+      throw new Error('Logout failed')
+    })
 }
 
 /**
@@ -65,8 +66,8 @@ export function logout(options: AuthUtilsOptions): void {
  * @returns {boolean} - `true` if the user is authenticated, otherwise `false`.
  */
 export function useProtectedRoute(): boolean {
-  const { token } = useAuth();
+  const { token } = useAuth()
 
   // Check if the user is authenticated
-  return !!token;
+  return typeof token === 'string' && token.length > 0
 }

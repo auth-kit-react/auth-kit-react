@@ -1,12 +1,12 @@
-import ky, { Options } from "ky";
-import { useState, useEffect } from "react";
+import ky, { type Options } from 'ky'
+import { useState, useEffect } from 'react'
 
 /**
  * Class representing an API client.
  */
 export class ApiClient {
-  private baseUrl: string;
-  private authToken: string | null;
+  private readonly baseUrl: string
+  private authToken: string | null
 
   /**
    * Creates an instance of ApiClient.
@@ -14,8 +14,8 @@ export class ApiClient {
    * @param {string | null} authToken - The authentication token.
    */
   constructor(baseUrl: string, authToken: string | null) {
-    this.baseUrl = baseUrl;
-    this.authToken = authToken;
+    this.baseUrl = baseUrl
+    this.authToken = authToken
   }
 
   /**
@@ -23,7 +23,7 @@ export class ApiClient {
    * @param {string | null} authToken - The authentication token.
    */
   setAuthToken(authToken: string | null): void {
-    this.authToken = authToken;
+    this.authToken = authToken
   }
 
   /**
@@ -31,13 +31,13 @@ export class ApiClient {
    * @returns {Options} - The request configuration.
    */
   private getRequestConfig(): Options {
-    const headers: Record<string, string> = {};
+    const headers: Record<string, string> = {}
 
-    if (this.authToken) {
-      headers.Authorization = `Bearer ${this.authToken}`;
+    if (this.authToken !== null && this.authToken !== undefined) {
+      headers.Authorization = `Bearer ${this.authToken}`
     }
 
-    return { headers };
+    return { headers }
   }
 
   /**
@@ -47,10 +47,10 @@ export class ApiClient {
    * @returns {Promise<T>} - The response data.
    */
   async get<T>(endpoint: string): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
-    const config = this.getRequestConfig();
+    const url = `${this.baseUrl}${endpoint}`
+    const config = this.getRequestConfig()
 
-    return ky.get(url, config).json();
+    return await ky.get(url, config).json()
   }
 
   /**
@@ -61,10 +61,10 @@ export class ApiClient {
    * @returns {Promise<T>} - The response data.
    */
   async post<T>(endpoint: string, data?: any): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
-    const config = this.getRequestConfig();
+    const url = `${this.baseUrl}${endpoint}`
+    const config = this.getRequestConfig()
 
-    return ky.post(url, { json: data, ...config }).json();
+    return await ky.post(url, { json: data, ...config }).json()
   }
 
   /**
@@ -75,10 +75,10 @@ export class ApiClient {
    * @returns {Promise<T>} - The response data.
    */
   async patch<T>(endpoint: string, data?: any): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
-    const config = this.getRequestConfig();
+    const url = `${this.baseUrl}${endpoint}`
+    const config = this.getRequestConfig()
 
-    return ky.patch(url, { json: data, ...config }).json();
+    return await ky.patch(url, { json: data, ...config }).json()
   }
 
   /**
@@ -89,10 +89,10 @@ export class ApiClient {
    * @returns {Promise<T>} - The response data.
    */
   async put<T>(endpoint: string, data?: any): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
-    const config = this.getRequestConfig();
+    const url = `${this.baseUrl}${endpoint}`
+    const config = this.getRequestConfig()
 
-    return ky.put(url, { json: data, ...config }).json();
+    return await ky.put(url, { json: data, ...config }).json()
   }
 
   /**
@@ -102,10 +102,10 @@ export class ApiClient {
    * @returns {Promise<T>} - The response data.
    */
   async delete<T>(endpoint: string): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
-    const config = this.getRequestConfig();
+    const url = `${this.baseUrl}${endpoint}`
+    const config = this.getRequestConfig()
 
-    return ky.delete(url, config).json();
+    return await ky.delete(url, config).json()
   }
 }
 
@@ -118,30 +118,34 @@ export class ApiClient {
  */
 export function useApi<T>(
   endpoint: string,
-  apiClient: ApiClient
+  apiClient: ApiClient,
 ): [T | null, boolean, string | null] {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<T | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        setLoading(true);
-        const response = await apiClient.get<T>(endpoint);
-        setData(response);
-      } catch (error) {
-        // Check if the error object has a 'message' property
-        const errorMessage =
-          (error as { message?: string }).message || "An error occurred";
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const fetchData = (): void => {
+      setLoading(true)
+      apiClient
+        .get<T>(endpoint)
+        .then((response) => {
+          setData(response)
+        })
+        .catch((error) => {
+          const errorMessage =
+            (error as { message?: string | null })?.message ??
+            'An error occurred' ??
+            'An error occurred'
+          setError(errorMessage)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
 
-    fetchData();
-  }, [endpoint, apiClient]);
+    fetchData()
+  }, [endpoint, apiClient])
 
-  return [data, loading, error];
+  return [data, loading, error]
 }

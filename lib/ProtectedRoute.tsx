@@ -1,6 +1,6 @@
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { useProtectedRoute } from "./utility/authUtils";
+import React from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
+import { useProtectedRoute } from './utility/authUtils'
 
 /**
  * ProtectedRoute: A React component that acts as a guard for protected routes.
@@ -14,13 +14,13 @@ const ProtectedRoute: React.FC = () => {
    * Boolean indicating whether the user is authenticated.
    * @type {boolean}
    */
-  const isAuthenticated = useProtectedRoute();
+  const isAuthenticated = useProtectedRoute()
 
   /**
    * Render the Outlet if the user is authenticated, otherwise redirect to the login page.
    * @returns {React.ReactElement} - JSX element representing Outlet or Navigate component.
    */
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
-};
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />
+}
 
-export default ProtectedRoute;
+export default ProtectedRoute

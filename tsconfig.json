@@ -6,7 +6,8 @@
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "outDir": "./dist"
   },
   "types": ["jest", "node"],
   "include": ["lib/**/*.ts", "lib/**/*.tsx"],
