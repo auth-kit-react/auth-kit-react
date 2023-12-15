@@ -1,2 +1,12 @@
-node_modules
 *.log
+
+# Exclude source files and directories
+src/
+tsconfig.json
+.vscode/
+
+# Exclude development and build-related files
+node_modules/
+# dist/
+build/
+.eslintrc.js
