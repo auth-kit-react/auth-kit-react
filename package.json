@@ -1,6 +1,6 @@
 {
   "name": "auth-kit-react",
-  "version": "1.2.11",
+  "version": "1.2.12",
   "description": "Auth Kit React is a versatile authentication and authorization package for React applications. It provides a simple and configurable solution for managing user authentication, authorization, and session handling.",
   "main": "index.ts",
   "module": "index.ts",
@@ -57,7 +57,8 @@
     "typescript": "*"
   },
   "engines": {
-    "node": ">=15"
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
   },
   "publishConfig": {
     "access": "public"
@@ -70,5 +71,10 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --fix",
     "*.{css,scss}": "stylelint --fix"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth-kit-react/auth-kit-react"
+  },
+  "homepage": "https://github.com/auth-kit-react/auth-kit-react/blob/main/README.md"
 }
