@@ -1,6 +1,6 @@
 {
   "name": "auth-kit-react",
-  "version": "1.2.20",
+  "version": "1.2.21",
   "description": "Auth Kit React is a versatile authentication and authorization package for React applications. It provides a simple and configurable solution for managing user authentication, authorization, and session handling.",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -41,7 +41,7 @@
   "dependencies": {
     "ky": "^1.1.3",
     "react": "^18.2.0",
-    "react-dom": "^18.3.0-next-fecc288b7-20221025",
+    "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.0"
   },
   "devDependencies": {
