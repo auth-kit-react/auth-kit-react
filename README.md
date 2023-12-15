@@ -17,8 +17,8 @@ Auth Kit React is a versatile authentication and authorization package for React
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Documentation](#api-documentation)
-- [Examples](#examples)
-- [Contributing](#contributing)
+<!-- - [Examples](#examples)
+- [Contributing](#contributing) -->
 - [License](#license)
 
 ## Installation
@@ -44,7 +44,6 @@ function App() {
   return (
     <AuthProvider authUtilsOptions={{ baseUrl: 'your-api-url' }}>
       {/* Your application components */}
-      <ProtectedRoute />
     </AuthProvider>
   );
 }
@@ -83,7 +82,6 @@ export default Profile;
 // src/components/Dashboard.js
 
 import React from 'react';
-import { ProtectedRoute } from 'auth-kit-react';
 
 function Dashboard() {
   return <div>Protected Dashboard</div>;
@@ -99,19 +97,21 @@ export default Dashboard;
 // src/App.js
 
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
+import { ProtectedRoute, AuthProvider } from 'auth-kit-react';
 
 function App() {
   return (
-    <div>
-      {/* Unprotected Route */}
-      <Route path="/login" element={<Login />} />
-
-      {/* Protected Route */}
-      <ProtectedRoute path="/dashboard" element={<Dashboard />} />
-    </div>
+    <AuthProvider authUtilsOptions={authUtilsOptions}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
   );
 }
 
